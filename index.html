@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>PJ Inventario · Descargar versión suelta</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:#eef3f0;color:#1b2a22;min-height:100vh;display:flex;justify-content:center;padding:18px}
+.card{background:#fff;border-radius:22px;box-shadow:0 10px 34px rgba(0,60,40,.18);max-width:460px;width:100%;overflow:hidden;align-self:flex-start}
+.top{background:linear-gradient(160deg,#00513a,#006747 60%,#1565c0);color:#fff;text-align:center;padding:30px 22px 26px}
+.top .ico{font-size:54px}
+.top h1{font-size:25px;line-height:1.15;margin:8px 0 4px}
+.top p{opacity:.9;font-size:15px}
+.ver{display:inline-block;margin-top:14px;background:#ffd54f;color:#3b2f00;font-weight:800;font-size:14px;padding:6px 16px;border-radius:30px}
+.cuerpo{padding:22px}
+.btn{display:block;width:100%;text-align:center;text-decoration:none;font-weight:800;border-radius:16px;padding:18px 14px;font-size:19px;border:0;cursor:pointer}
+.btn.pri{background:#006747;color:#fff;box-shadow:0 5px 0 #003d2a}
+.btn.sec{background:#e8f5e9;color:#1b5e20;font-size:15px;margin-top:14px;padding:13px}
+.meta{text-align:center;color:#607d8b;font-size:13px;margin:10px 0 2px;min-height:18px}
+h2{font-size:17px;color:#006747;margin:26px 0 10px}
+ol{padding-left:0;list-style:none;counter-reset:p}
+ol li{counter-increment:p;position:relative;padding:4px 0 12px 46px;font-size:15px;line-height:1.45}
+ol li::before{content:counter(p);position:absolute;left:0;top:2px;width:32px;height:32px;border-radius:50%;background:#ffd54f;color:#3b2f00;font-weight:800;display:flex;align-items:center;justify-content:center}
+.aviso{background:#fff8e1;border-left:5px solid #ffb300;border-radius:10px;padding:12px 14px;font-size:14px;line-height:1.5;margin-top:8px}
+.aviso b{color:#8a5a00}
+.pie{text-align:center;color:#90a4ae;font-size:12px;padding:6px 22px 20px}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="top">
+    <div class="ico">📊</div>
+    <h1>PJ Inventario<br>Versión suelta</h1>
+    <p>Cuenta, convierte y compara en tu celular</p>
+    <span class="ver" id="ver">Última versión</span>
+  </div>
+  <div class="cuerpo">
+    <a class="btn pri" id="bajar" href="PJ_INVENTARIO97_suelto.html" download="PJ_INVENTARIO_suelto.html">⬇️ Descargar última versión</a>
+    <div class="meta" id="meta"></div>
+    <a class="btn sec" href="PJ_INVENTARIO97_suelto.html">🌐 Abrir directo en el navegador (sin descargar)</a>
+
+    <h2>Cómo instalarla en el celular de la tienda</h2>
+    <ol>
+      <li>Toca <b>Descargar última versión</b>.</li>
+      <li>Abre <b>Descargas</b> en el celular y toca el archivo <b>PJ_INVENTARIO_suelto.html</b>.</li>
+      <li>Elige <b>Chrome</b> para abrirlo. Ya puedes contar.</li>
+      <li>Al terminar, toca <b>Exportar Excel</b> y envía el archivo.</li>
+    </ol>
+
+    <div class="aviso"><b>Antes de actualizar:</b> toca <b>Exportar Excel</b> (o <b>Historial → Guardar copia</b>). Al abrir un archivo nuevo, el celular puede empezar sin los datos anteriores; si pasa, usa <b>Historial → Restaurar</b> con el Excel que exportaste.</div>
+    <div class="aviso" style="margin-top:10px"><b>¿Hay una versión nueva?</b> Vuelve a este mismo enlace y descárgala otra vez. Siempre es la última.</div>
+  </div>
+  <div class="pie">Si el botón no descarga, mantén presionado y elige «Descargar enlace».</div>
+</div>
+<script>
+(function(){
+  var ARCHIVO="PJ_INVENTARIO97_suelto.html";
+  var bajar=document.getElementById("bajar");
+  // cada clic pide el archivo "fresco" para no bajar una copia vieja guardada por el navegador
+  bajar.addEventListener("click",function(){bajar.href=ARCHIVO+"?t="+Date.now();});
+  // lee la versión directo del archivo publicado: al reemplazarlo, esta página se actualiza sola
+  fetch(ARCHIVO+"?t="+Date.now(),{cache:"no-store"}).then(function(r){
+    var mod=r.headers.get("Last-Modified");
+    return r.text().then(function(t){return {t:t,mod:mod};});
+  }).then(function(o){
+    var m=o.t.match(/APP_VERSION\s*=\s*(\d+)/);
+    if(m)document.getElementById("ver").textContent="Última versión: v"+m[1];
+    var kb=Math.round(o.t.length/1024),txt=kb+" KB";
+    if(o.mod){try{txt="Actualizada el "+new Date(o.mod).toLocaleDateString("es-PE",{day:"2-digit",month:"long",year:"numeric"})+" · "+txt;}catch(e){}}
+    document.getElementById("meta").textContent=txt;
+  }).catch(function(){});
+})();
+</script>
+</body>
+</html>
